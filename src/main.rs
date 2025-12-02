@@ -1,3 +1,5 @@
+mod day1;
+mod day2;
 fn main() {
-    println!("Hello, world!");
+    println!("{:?}", day2::total_invalid_ids_new_rule());
 }
