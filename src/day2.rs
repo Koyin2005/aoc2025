@@ -1,7 +1,4 @@
-use std::{
-    collections::{HashMap, HashSet},
-    num::{NonZero, NonZeroI32},
-};
+use std::fmt::Formatter;
 
 fn read_file() -> String {
     std::fs::read_to_string("src/day_2_input.txt").expect("The file should be here")
@@ -22,8 +19,7 @@ pub fn total_invalid_ids_new_rule() -> usize {
     let source = read_file();
     let ranges = id_ranges(&source);
     for ((first, _), (last, _)) in ranges {
-        for i in first..=last {
-            let num = i;
+        for num in first..=last {
             let digits = num
                 .to_string()
                 .into_bytes()
@@ -31,21 +27,17 @@ pub fn total_invalid_ids_new_rule() -> usize {
                 .map(|x| x as usize)
                 .collect::<Vec<_>>();
             let mut invalid = false;
-            let seen_sequences = (1..=digits.len() / 2)
-                .map(|i| &digits[0..i])
-                .collect::<Vec<_>>();
-            for sequence in seen_sequences {
+            for sequence in (1..=digits.len() / 2).map(|i| &digits[0..i]) {
                 let mut digits = digits.as_slice();
-                let mut made_up_of = 0;
+                if digits.len() % sequence.len() != 0 {
+                    continue;
+                }
                 while let Some((first, rest)) = digits.split_at_checked(sequence.len())
                     && first == sequence
                 {
                     digits = rest;
-                    made_up_of += 1;
                 }
-                if digits.is_empty() && made_up_of > 1 {
-                    invalid = true;
-                }
+                invalid |= digits.is_empty();
             }
             if invalid {
                 sum += num;
