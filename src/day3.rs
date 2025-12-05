@@ -45,24 +45,26 @@ pub fn total_output_joltage_with_friction() -> usize {
     let banks = banks_from_src(&src);
     let mut sum = 0;
     for bank in banks {
-        let value_of = |digits:&Vec<usize>|{
-            let value : usize = digits.iter().rev().enumerate().map(|(i,&digit)|{
-                digit * (10usize.pow(i as u32))
-            }).sum();
+        let value_of = |digits: &Vec<usize>| {
+            let value: usize = digits
+                .iter()
+                .rev()
+                .enumerate()
+                .map(|(i, &digit)| digit * (10usize.pow(i as u32)))
+                .sum();
             value
         };
         let mut joltage_digits = Vec::<usize>::new();
-        for (i,&joltage) in bank.batteries.iter().enumerate(){
-            while let Some(digit) = joltage_digits.last() && 
-                *digit < joltage
-                && (12 - joltage_digits.len())
-                 < bank.batteries.len() - i{
-                    joltage_digits.pop();
-                }
-            if joltage_digits.len() < 12{
+        for (i, &joltage) in bank.batteries.iter().enumerate() {
+            while let Some(digit) = joltage_digits.last()
+                && *digit < joltage
+                && (12 - joltage_digits.len()) < bank.batteries.len() - i
+            {
+                joltage_digits.pop();
+            }
+            if joltage_digits.len() < 12 {
                 joltage_digits.push(joltage);
             }
-
         }
         sum += value_of(&joltage_digits);
     }
