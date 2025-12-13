@@ -1,5 +1,7 @@
 mod day1;
 mod day10;
+mod day11;
+mod day12;
 mod day2;
 mod day3;
 mod day4;
@@ -9,5 +11,5 @@ mod day7;
 mod day8;
 mod day9;
 fn main() {
-    println!("{:?}", day10::fewest_button_presses());
+    println!("{:?}", day12::regions_that_fit());
 }
